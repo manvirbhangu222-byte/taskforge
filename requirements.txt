@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+redis
+SQLAlchemy
+psycopg[binary]
+python-dotenv
+bcrypt
+pyjwt

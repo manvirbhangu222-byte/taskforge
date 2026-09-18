@@ -13,11 +13,7 @@ import redis
 from app.database import SessionLocal
 from app.models import Job
 
-r = redis.Redis(
-    host=settings.redis_host,
-    port=settings.redis_port,
-    decode_responses=True,
-)
+r = redis.Redis.from_url(settings.redis_url, decode_responses=True)
 
 JOB_QUEUES_BY_PRIORITY = ["job_queue:high", "job_queue:normal", "job_queue:low"]
 FAILED_JOB_QUEUE = "failed_job_queue"

@@ -10,12 +10,7 @@ from app.config import settings
 from app.database import SessionLocal
 from app.models import Job
 
-
-redis_client = redis.Redis(
-    host=settings.redis_host,
-    port=settings.redis_port,
-    decode_responses=True,
-)
+redis_client = redis.Redis.from_url(settings.redis_url, decode_responses=True)
 
 
 VALID_PRIORITIES = {"high", "normal", "low"}

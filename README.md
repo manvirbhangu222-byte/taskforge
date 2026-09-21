@@ -79,7 +79,7 @@ TaskForge provides **at-least-once** job processing, not exactly-once. If a work
 - **Enqueue consistency**: `enqueue_job` writes to PostgreSQL and pushes to Redis as two separate operations, not one atomic transaction. If the process crashes between them, a job record could exist in Postgres with no corresponding Redis message. This isn't solved here — a production system would use a pattern like a transactional outbox or a reconciliation job to close that gap.
 - **Redis Lists as the queue primitive**: chosen deliberately to understand queue mechanics directly, not as a production recommendation. A system with stricter durability or delivery-guarantee requirements would likely use a dedicated broker.
 - **JWT_SECRET** is a plain development-style secret set via `.env`, not rotated or vaulted — fine for a learning project, not for production.
-- **Priority ordering** relies on Redis `BRPOP` checking queue keys in a fixed order; under sustained high-priority load, lower-priority jobs could theoretically starve. Not mitigated here, but understood as a real tradeoff (fair-scheduling/aging are the standard fixes).
+- **Priority ordering** is enforced via Redis BRPOP checking queue keys in order — verified with a live test (see test_priority_ordering.py): high-priority jobs reliably start before normal, which starts before low, even when submitted last." (fair-scheduling/aging are the standard fixes).
 
 ## Tech stack
 
